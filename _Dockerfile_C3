@@ -1,0 +1,24 @@
+# image based Ubuntu latest distro
+FROM ubuntu:latest
+MAINTAINER Romain Kerleroux
+
+# update repo , SSH client install , net tools, vim
+RUN apt update -y && apt-get install -y openssh-client \
+        && apt-get install -y inetutils-ping && apt-get install -y vim
+
+# DCMTK installation
+RUN apt-get install -y dcmtk
+
+# Python installation
+RUN apt-get install -y python && apt-get install -y python3-pymongo
+
+# local directory for storage of datas
+RUN mkdir /Hera-Mi_STORE_C2
+
+# import script inside C2 from Docker-host
+COPY copy_files_from_C1.sh /tmp
+COPY dicom_dump_3b.sh /tmp
+COPY store_mongodb.py /tmp
+
+# internal container port 22 exposed
+EXPOSE 22

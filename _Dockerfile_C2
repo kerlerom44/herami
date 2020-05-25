@@ -1,0 +1,15 @@
+# image based Ubuntu latest distro
+FROM ubuntu:latest
+MAINTAINER Romain Kerleroux
+
+# update repo , SSH client install , net tools
+RUN apt update -y && apt-get install -y openssh-client && apt-get install -y inetutils-ping
+
+# local directory for storage of datas
+RUN mkdir /Hera-Mi_STORE_C2
+
+# import script inside C2 from Docker-host
+COPY copy_files_from_C1.sh /tmp
+
+# internal container port 22 exposed
+EXPOSE 22

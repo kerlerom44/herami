@@ -1,0 +1,18 @@
+# image based on CentOS latest distro
+FROM centos:latest
+MAINTAINER Romain Kerleroux
+
+# update repo , SSH server install , GIT install
+RUN yum update -y && yum install -y openssh-server && yum install git -y
+
+# root password config , SSH key generation
+RUN echo root:password | chpasswd && ssh-keygen -A
+
+# internal container port 22 exposed
+EXPOSE 22
+
+# transfert Git script towards C1
+COPY pull_repo_HeraMi.sh /tmp
+
+# script to be executed at C1 launch
+CMD bash -C '/tmp/pull_repo_HeraMi.sh'
